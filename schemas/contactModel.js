@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
 const contactSchema = new Schema({
     user_id: {
@@ -14,5 +14,4 @@ const contactSchema = new Schema({
     }
 })
 
-const Contact = model("Contact", contactSchema)
-export default Contact
+export default contactSchema

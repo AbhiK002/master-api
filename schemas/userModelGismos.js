@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
-const userSchema = new Schema({
+const userSchemaGismos = new Schema({
     name: {
         type: String,
         required: true
@@ -22,5 +22,4 @@ const userSchema = new Schema({
     }
 }, {timestamps: true})
 
-const UserGismos = model("User", userSchema)
-export default UserGismos
+export default userSchemaGismos

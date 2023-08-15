@@ -7,18 +7,18 @@ import compression from 'compression';
 import { rateLimit } from 'express-rate-limit';
 import dotenv from 'dotenv';
 
-import UserGismos from './models/userModelGismos.js';
-import Product from './models/productModel.js';
-import UserCallMe from './models/userModelCallMe.js';
-import Contact from './models/contactModel.js';
 import { verifyToken as verifyTokenGismos, generateToken as generateTokenGismos } from './middleware/authGismos.js';
 import { verifyToken as verifyTokenCallMe, generateToken as generateTokenCallMe } from './middleware/authCallMe.js';
+import productSchema from './schemas/productModel.js';
+import userSchemaGismos from './schemas/userModelGismos.js';
+import contactSchema from './schemas/contactModel.js';
+import userSchemaCallMe from './schemas/userModelCallMe.js';
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_URI_GISMOS = process.env.DB_URI_GISMOS;
-const DB_URI = process.env.DB_URI_CALLME;
+const DB_URI_CALLME = process.env.DB_URI_CALLME;
 
 app.use(cors());
 app.use(json());
@@ -36,17 +36,23 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // databases
-mongoose.connect(DB_URI_GISMOS).then((db) => {
+const mongooseGismos = new mongoose.Mongoose();
+mongooseGismos.connect(DB_URI_GISMOS).then((db) => {
 	console.log("connected to gismos database successfully");
 }).catch((err) => {
 	console.log("couldn't connect to the gismos database: code " + err.code + ", errorName " + err.codeName);
-})
+});
+const Product = mongooseGismos.model("Product", productSchema);
+const UserGismos = mongooseGismos.model("User", userSchemaGismos);
 
-mongoose.connect(DB_URI).then((db) => {
+const mongooseCallMe = new mongoose.Mongoose();
+mongooseCallMe.connect(DB_URI_CALLME).then((db) => {
 	console.log("connected to callme database successfully");
 }).catch((err) => {
 	console.log("couldn't connect to the callme database: code " + err.code + ", errorName " + err.codeName);
 })
+const Contact = mongooseCallMe.model("Contact", contactSchema);
+const UserCallMe = mongooseCallMe.model("User", userSchemaCallMe);
 
 app.get("/", (req, res) => {
 	return res.status(200).json({

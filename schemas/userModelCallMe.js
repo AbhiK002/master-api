@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema } from "mongoose";
 
-const userSchema = new Schema({
+const userSchemaCallMe = new Schema({
     name: {
         type: String,
         required: true
@@ -16,5 +16,4 @@ const userSchema = new Schema({
     }
 }, {timestamps: true})
 
-const UserCallMe = model("User", userSchema)
-export default UserCallMe
+export default userSchemaCallMe
