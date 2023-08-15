@@ -16,7 +16,7 @@ export function verifyToken(req, res, next) {
 
     if (token.startsWith("Bearer ")) token = token.split(" ")[1];
 
-    jwt.verify(token, process.env.TOKEN_SECRET_KEY, (err, decodedToken) => {
+    jwt.verify(token, process.env.TOKEN_SECRET_KEY_CALLME, (err, decodedToken) => {
         if (err) {
             return res.status(401).json({
                 error: err.name,
@@ -32,5 +32,5 @@ export function verifyToken(req, res, next) {
 }
 
 export function generateToken(userId, callback) {
-    return jwt.sign({ userId: userId}, process.env.TOKEN_SECRET_KEY, { expiresIn: '72h'}, callback)
+    return jwt.sign({ userId: userId}, process.env.TOKEN_SECRET_KEY_CALLME, { expiresIn: '72h'}, callback)
 }
